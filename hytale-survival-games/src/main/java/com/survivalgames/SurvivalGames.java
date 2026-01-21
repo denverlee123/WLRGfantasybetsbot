@@ -173,12 +173,12 @@ public class SurvivalGames extends JavaPlugin {
         commandManager.register(new AbstractCommand("kit", "Select or view kits") {
             @Override
             protected CompletableFuture<Void> execute(CommandContext context) {
-                if (!context.isPlayer()) {
+                if (!(context.sender() instanceof PlayerRef)) {
                     context.sendMessage(Message.raw("§cOnly players can use this command!"));
                     return CompletableFuture.completedFuture(null);
                 }
 
-                PlayerRef player = context.senderAsPlayerRef();
+                PlayerRef player = (PlayerRef) context.sender();
                 String[] input = context.getInputString().split(" ");
 
                 if (input.length < 2) {
@@ -208,12 +208,12 @@ public class SurvivalGames extends JavaPlugin {
         commandManager.register(new AbstractCommand("stats", "View your statistics") {
             @Override
             protected CompletableFuture<Void> execute(CommandContext context) {
-                if (!context.isPlayer()) {
+                if (!(context.sender() instanceof PlayerRef)) {
                     context.sendMessage(Message.raw("§cOnly players can use this command!"));
                     return CompletableFuture.completedFuture(null);
                 }
 
-                PlayerRef player = context.senderAsPlayerRef();
+                PlayerRef player = (PlayerRef) context.sender();
                 GamePlayer stats = gamePlayers.computeIfAbsent(player.getUuid(), k -> new GamePlayer());
 
                 context.sendMessage(Message.raw("§a§l========== Your Statistics =========="));
