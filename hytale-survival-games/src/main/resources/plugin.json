@@ -4,6 +4,6 @@
   "version": "1.0.0",
   "description": "A fully-featured Survival Games minigame plugin for Hytale with kit selection, multiple arenas, and more!",
   "authors": ["WLRGfantasybetsbot"],
-  "main": "com.survivalgames.SurvivalGamesPlugin",
+  "main": "com.survivalgames.SurvivalGames",
   "dependencies": []
 }

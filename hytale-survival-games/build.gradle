@@ -17,18 +17,21 @@ repositories {
 }
 
 dependencies {
-    // Hytale API - You need to provide this from your Hytale server!
-    // Option 1: Place your hytale-server.jar in the project root, then uncomment:
-    // compileOnly files('hytale-server.jar')
+    // Hytale Server API
+    // IMPORTANT: Replace this path with YOUR actual Hytale server file location!
+    // The file might be named server.aot, but you need the JAR file that contains com.hypixel.hytale classes
 
-    // Option 2: Or use the full path to your server:
-    // compileOnly files('C:/path/to/your/hytale-server.jar')
+    // Option 1: If you copied the JAR to this folder:
+    compileOnly files('hytale-server.jar')
 
-    // For now, this will fail until you add the Hytale API
-    // See API_UNAVAILABLE.md for detailed instructions
+    // Option 2: Use full path (UNCOMMENT and UPDATE this line, COMMENT line above):
+    // compileOnly files('C:/Users/idark/path/to/your/hytale/server.jar')
 
     // JSON handling for configs
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Kotlin stdlib (Hytale uses Kotlin)
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.22'
 }
 
 tasks.withType(JavaCompile) {
