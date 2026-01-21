@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+out/
+bin/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Plugin data
+plugins/
+server/
+
+# Build outputs
+*.jar
+!gradle-wrapper.jar
