@@ -5,8 +5,12 @@ plugins {
 
 group = 'com.survivalgames'
 version = '1.0.0'
-sourceCompatibility = '21'
-targetCompatibility = '21'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
     mavenCentral()
