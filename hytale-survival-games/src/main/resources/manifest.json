@@ -1,9 +1,9 @@
 {
-  "id": "survival-games",
-  "name": "Survival Games",
-  "version": "1.0.0",
-  "description": "A fully-featured Survival Games minigame plugin for Hytale with kit selection, multiple arenas, and more!",
-  "authors": ["WLRGfantasybetsbot"],
-  "main": "com.survivalgames.SurvivalGames",
-  "dependencies": []
+  "Id": "survival-games",
+  "Name": "Survival Games",
+  "Version": "1.0.0",
+  "Description": "A fully-featured Survival Games minigame plugin for Hytale with kit selection, multiple arenas, and more!",
+  "Authors": ["WLRGfantasybetsbot"],
+  "Main": "com.survivalgames.SurvivalGames",
+  "Dependencies": []
 }
