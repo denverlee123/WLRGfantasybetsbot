@@ -14,15 +14,18 @@ java {
 
 repositories {
     mavenCentral()
-    maven {
-        name = 'Hytale'
-        url = 'https://maven.hytale.com/releases'
-    }
 }
 
 dependencies {
-    // Hytale API
-    compileOnly 'com.hytale:hytale-api:1.0.0'
+    // Hytale API - You need to provide this from your Hytale server!
+    // Option 1: Place your hytale-server.jar in the project root, then uncomment:
+    // compileOnly files('hytale-server.jar')
+
+    // Option 2: Or use the full path to your server:
+    // compileOnly files('C:/path/to/your/hytale-server.jar')
+
+    // For now, this will fail until you add the Hytale API
+    // See API_UNAVAILABLE.md for detailed instructions
 
     // JSON handling for configs
     implementation 'com.google.code.gson:gson:2.10.1'
