@@ -3,12 +3,8 @@ package com.survivalgames;
 import com.google.gson.*;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.command.Command;
-import com.hypixel.hytale.server.core.command.CommandSender;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.*;
 
 import java.io.*;
@@ -16,11 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Hytale Survival Games Plugin
- * A complete Survival Games minigame with kit selection, multiple arenas, and more!
+ *
+ * NOTE: This is a minimal version that works with the current Hytale Early Access server.
+ * The command system (Command/CommandSender classes) is not available in this version,
+ * so commands will need to be added once we discover how commands actually work in your server.
  */
 public class SurvivalGames extends JavaPlugin {
 
@@ -36,37 +34,43 @@ public class SurvivalGames extends JavaPlugin {
 
     @Override
     public void setup() {
-        getLogger().info("Setting up Survival Games plugin...");
+        log("Setting up Survival Games plugin...");
 
         // Load configuration
         loadConfig();
 
-        // Register commands
-        registerCommands();
-
-        getLogger().info("Survival Games setup complete!");
+        log("Survival Games setup complete!");
     }
 
     @Override
     public void start() {
-        getLogger().info("Starting Survival Games plugin...");
+        log("Starting Survival Games plugin...");
 
         // Register event listeners
         registerEvents();
 
-        getLogger().info("Survival Games plugin started successfully!");
-        getLogger().info("Loaded " + config.kits.size() + " kits");
-        getLogger().info("Use /sg help for commands");
+        log("Survival Games plugin started successfully!");
+        log("Loaded " + config.kits.size() + " kits");
+        log("Commands are not available in this Hytale version");
+        log("Waiting for command system to be discovered...");
     }
 
     @Override
     public void shutdown() {
-        getLogger().info("Shutting down Survival Games plugin...");
+        log("Shutting down Survival Games plugin...");
 
         // Save any pending data
         saveConfig();
 
-        getLogger().info("Survival Games plugin shut down successfully!");
+        log("Survival Games plugin shut down successfully!");
+    }
+
+    private void log(String message) {
+        System.out.println("[SurvivalGames] " + message);
+    }
+
+    private void logError(String message) {
+        System.err.println("[SurvivalGames] ERROR: " + message);
     }
 
     private void loadConfig() {
@@ -81,16 +85,16 @@ public class SurvivalGames extends JavaPlugin {
                 // Create default config
                 config = GameConfig.createDefault();
                 saveConfig();
-                getLogger().info("Created default configuration");
+                log("Created default configuration");
             } else {
                 // Load existing config
                 String json = Files.readString(configPath);
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 config = gson.fromJson(json, GameConfig.class);
-                getLogger().info("Loaded configuration from " + configPath);
+                log("Loaded configuration from " + configPath);
             }
         } catch (IOException e) {
-            getLogger().error("Failed to load config: " + e.getMessage());
+            logError("Failed to load config: " + e.getMessage());
             config = GameConfig.createDefault();
         }
     }
@@ -104,161 +108,34 @@ public class SurvivalGames extends JavaPlugin {
             String json = gson.toJson(config);
             Files.writeString(configPath, json);
         } catch (IOException e) {
-            getLogger().error("Failed to save config: " + e.getMessage());
+            logError("Failed to save config: " + e.getMessage());
         }
-    }
-
-    private void registerCommands() {
-        // Main SG command
-        getCommandRegistry().registerCommand(new Command() {
-            @Override
-            public String getName() {
-                return "sg";
-            }
-
-            @Override
-            public void execute(CommandSender sender, String[] args) {
-                if (args.length == 0) {
-                    sendHelp(sender);
-                    return;
-                }
-
-                String subCmd = args[0].toLowerCase();
-                switch (subCmd) {
-                    case "help":
-                        sendHelp(sender);
-                        break;
-                    case "info":
-                        sender.sendMessage(Message.raw("§6§lSURVIVAL GAMES v1.0.0"));
-                        sender.sendMessage(Message.raw("§7A Hytale Survival Games minigame!"));
-                        break;
-                    case "kits":
-                        listKits(sender);
-                        break;
-                    default:
-                        sender.sendMessage(Message.raw("§cUnknown subcommand. Use /sg help"));
-                }
-            }
-
-            private void sendHelp(CommandSender sender) {
-                sender.sendMessage(Message.raw("§a§l========== Survival Games =========="));
-                sender.sendMessage(Message.raw("§e/sg help §7- Show this help"));
-                sender.sendMessage(Message.raw("§e/sg info §7- Plugin information"));
-                sender.sendMessage(Message.raw("§e/sg kits §7- List available kits"));
-                sender.sendMessage(Message.raw("§e/kit <name> §7- Select a kit"));
-                sender.sendMessage(Message.raw("§e/stats §7- View your statistics"));
-            }
-
-            private void listKits(CommandSender sender) {
-                sender.sendMessage(Message.raw("§a§l========== Available Kits =========="));
-                config.kits.forEach((id, kit) -> {
-                    sender.sendMessage(Message.raw("§e" + kit.name + " §8- §7" + kit.description));
-                });
-            }
-        });
-
-        // Kit selection command
-        getCommandRegistry().registerCommand(new Command() {
-            @Override
-            public String getName() {
-                return "kit";
-            }
-
-            @Override
-            public void execute(CommandSender sender, String[] args) {
-                if (!(sender instanceof PlayerRef)) {
-                    sender.sendMessage(Message.raw("§cOnly players can use this command!"));
-                    return;
-                }
-
-                PlayerRef player = (PlayerRef) sender;
-
-                if (args.length == 0) {
-                    // List kits
-                    sender.sendMessage(Message.raw("§a§lAvailable Kits:"));
-                    config.kits.forEach((id, kit) -> {
-                        sender.sendMessage(Message.raw("§e/kit " + id + " §7- " + kit.name));
-                    });
-                    return;
-                }
-
-                String kitId = args[0].toLowerCase();
-                if (!config.kits.containsKey(kitId)) {
-                    sender.sendMessage(Message.raw("§cKit '" + kitId + "' not found!"));
-                    return;
-                }
-
-                playerKits.put(player.getUuid(), kitId);
-                KitConfig kit = config.kits.get(kitId);
-                sender.sendMessage(Message.raw("§aSelected kit: §e" + kit.name));
-                sender.sendMessage(Message.raw("§7" + kit.description));
-            }
-        });
-
-        // Stats command
-        getCommandRegistry().registerCommand(new Command() {
-            @Override
-            public String getName() {
-                return "stats";
-            }
-
-            @Override
-            public void execute(CommandSender sender, String[] args) {
-                if (!(sender instanceof PlayerRef)) {
-                    sender.sendMessage(Message.raw("§cOnly players can use this command!"));
-                    return;
-                }
-
-                PlayerRef player = (PlayerRef) sender;
-                GamePlayer stats = gamePlayers.computeIfAbsent(player.getUuid(), k -> new GamePlayer());
-
-                sender.sendMessage(Message.raw("§a§l========== Your Statistics =========="));
-                sender.sendMessage(Message.raw("§7Games Played: §e" + stats.gamesPlayed));
-                sender.sendMessage(Message.raw("§7Wins: §e" + stats.wins));
-                sender.sendMessage(Message.raw("§7Kills: §e" + stats.kills));
-                sender.sendMessage(Message.raw("§7Deaths: §e" + stats.deaths));
-
-                if (stats.deaths > 0) {
-                    double kd = (double) stats.kills / stats.deaths;
-                    sender.sendMessage(Message.raw("§7K/D Ratio: §e" + String.format("%.2f", kd)));
-                }
-
-                if (stats.gamesPlayed > 0) {
-                    double winRate = (double) stats.wins / stats.gamesPlayed * 100;
-                    sender.sendMessage(Message.raw("§7Win Rate: §e" + String.format("%.1f%%", winRate)));
-                }
-            }
-        });
     }
 
     private void registerEvents() {
         // Player connect event
         getEventRegistry().register(PlayerConnectEvent.class, event -> {
             PlayerRef player = event.getPlayerRef();
-            getLogger().info("Player connected: " + player.getUsername());
+            log("Player connected: " + player.getUsername());
 
             // Initialize player data
             gamePlayers.computeIfAbsent(player.getUuid(), k -> new GamePlayer());
 
             // Welcome message
-            player.sendMessage(Message.raw("§a§lWelcome to Survival Games!"));
-            player.sendMessage(Message.raw("§7Use §e/sg help §7for commands"));
+            player.sendMessage(Message.raw("§a§l================================="));
+            player.sendMessage(Message.raw("§6§lWelcome to Survival Games!"));
+            player.sendMessage(Message.raw("§7This is an early version."));
+            player.sendMessage(Message.raw("§7Commands are not yet available."));
+            player.sendMessage(Message.raw("§a§l================================="));
         });
 
         // Player disconnect event
         getEventRegistry().register(PlayerDisconnectEvent.class, event -> {
             PlayerRef player = event.getPlayerRef();
-            getLogger().info("Player disconnected: " + player.getUsername());
+            log("Player disconnected: " + player.getUsername());
 
-            // Remove from any active games (will implement later)
-        });
-
-        // Player chat event (async)
-        getEventRegistry().registerAsync(PlayerChatEvent.class, future -> {
-            return future.thenApply(event -> {
-                // Could add chat formatting, filtering, etc.
-                return event;
-            });
+            // Save player stats before they leave
+            saveConfig();
         });
     }
 
