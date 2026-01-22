@@ -1,0 +1,81 @@
+{
+  "minPlayers": 2,
+  "maxPlayers": 24,
+  "countdownSeconds": 30,
+  "gracePeriodSeconds": 30,
+  "borderShrinkStart": 300,
+  "borderShrinkSpeed": 1.0,
+  "chestRefillInterval": 180,
+  "kits": {
+    "warrior": {
+      "name": "Warrior",
+      "description": "A balanced fighter with sword and armor",
+      "icon": "hytale:items/weapons/swords/one_handed/iron_one_handed_sword",
+      "items": [
+        "hytale:items/weapons/swords/one_handed/iron_one_handed_sword:1",
+        "hytale:items/weapons/bows/shortbow/wooden_shortbow:1",
+        "hytale:items/ammo/arrows/iron_arrow:16",
+        "hytale:items/armor/helmets/iron_helmet:1",
+        "hytale:items/armor/chestplates/iron_chestplate:1",
+        "hytale:items/food/cooked_meat:8",
+        "hytale:items/potions/health_potion:2"
+      ]
+    },
+    "archer": {
+      "name": "Archer",
+      "description": "Master of ranged combat with extra arrows",
+      "icon": "hytale:items/weapons/bows/shortbow/wooden_shortbow",
+      "items": [
+        "hytale:items/weapons/swords/one_handed/wooden_one_handed_sword:1",
+        "hytale:items/weapons/bows/shortbow/wooden_shortbow:1",
+        "hytale:items/ammo/arrows/iron_arrow:32",
+        "hytale:items/armor/helmets/leather_helmet:1",
+        "hytale:items/armor/chestplates/leather_chestplate:1",
+        "hytale:items/food/cooked_meat:6",
+        "hytale:items/potions/speed_potion:2"
+      ]
+    },
+    "tank": {
+      "name": "Tank",
+      "description": "Heavy armor and high survivability",
+      "icon": "hytale:items/armor/chestplates/iron_chestplate",
+      "items": [
+        "hytale:items/weapons/swords/one_handed/iron_one_handed_sword:1",
+        "hytale:items/armor/helmets/iron_helmet:1",
+        "hytale:items/armor/chestplates/iron_chestplate:1",
+        "hytale:items/armor/leggings/iron_leggings:1",
+        "hytale:items/armor/boots/iron_boots:1",
+        "hytale:items/food/cooked_meat:12",
+        "hytale:items/potions/health_potion:3",
+        "hytale:items/tools/shield:1"
+      ]
+    },
+    "assassin": {
+      "name": "Assassin",
+      "description": "Fast and deadly with speed potions",
+      "icon": "hytale:items/weapons/daggers/iron_dagger",
+      "items": [
+        "hytale:items/weapons/daggers/iron_dagger:1",
+        "hytale:items/weapons/swords/one_handed/iron_one_handed_sword:1",
+        "hytale:items/armor/helmets/leather_helmet:1",
+        "hytale:items/armor/chestplates/leather_chestplate:1",
+        "hytale:items/food/cooked_meat:6",
+        "hytale:items/potions/speed_potion:3",
+        "hytale:items/potions/invisibility_potion:1"
+      ]
+    },
+    "berserker": {
+      "name": "Berserker",
+      "description": "High damage with battle axe",
+      "icon": "hytale:items/weapons/axes/battleaxe/iron_battleaxe",
+      "items": [
+        "hytale:items/weapons/axes/battleaxe/iron_battleaxe:1",
+        "hytale:items/armor/helmets/iron_helmet:1",
+        "hytale:items/armor/chestplates/iron_chestplate:1",
+        "hytale:items/food/cooked_meat:10",
+        "hytale:items/potions/strength_potion:2",
+        "hytale:items/potions/health_potion:2"
+      ]
+    }
+  }
+}

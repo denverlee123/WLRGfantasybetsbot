@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.survivalgames'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Hytale Server API
+    // IMPORTANT: Replace this path with YOUR actual Hytale server file location!
+    // The file might be named server.aot, but you need the JAR file that contains com.hypixel.hytale classes
+
+    // Option 1: If you copied the JAR to this folder:
+    compileOnly files('hytale-server.jar')
+
+    // Option 2: Use full path (UNCOMMENT and UPDATE this line, COMMENT line above):
+    // compileOnly files('C:/Users/idark/path/to/your/hytale/server.jar')
+
+    // JSON handling for configs
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Kotlin stdlib (Hytale uses Kotlin)
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.22'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
